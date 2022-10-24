@@ -1,13 +1,16 @@
 package com.kpoma.film.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -42,8 +45,44 @@ public class User {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        if(roles==null){
+            return Collections.emptyList();
+        }
+
+        HashSet<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
+
+        Arrays.stream(roles.split(","))
+                .collect(Collectors.toList())
+                .forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+
+        return grantedAuthorities;
     }
 
     public String getPassword() {

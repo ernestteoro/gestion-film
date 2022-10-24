@@ -6,6 +6,7 @@ import com.kpoma.film.model.User
 import com.kpoma.film.repository.PlaylistRepository
 import com.kpoma.film.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable
 @Service
 class UserService(
     @Autowired val  userRepository: UserRepository,
-    @Autowired private val  playlistRepository: PlaylistRepository
+    @Autowired private val  playlistRepository: PlaylistRepository,
+    @Autowired private val passwordEncoder: PasswordEncoder
     ) {
 
     fun addUser(user:User):User{
+        val encodedPasswordEncoder = passwordEncoder.encode(user.password)
+        user.password=encodedPasswordEncoder
         return userRepository.save(user)
     }
 

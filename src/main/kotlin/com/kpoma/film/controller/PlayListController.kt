@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Suppress("SENSELESS_COMPARISON")
 @RestController
 @RequestMapping("v1/playlists")
 class PlayListController(@Autowired val playListService: PlayListService) {
@@ -54,7 +55,6 @@ class PlayListController(@Autowired val playListService: PlayListService) {
     fun listFilmPlaylist(@PathVariable id: Int): List<Film>{
        return  playListService.listFilmPlaylist(id)
     }
-
 
 
 }
