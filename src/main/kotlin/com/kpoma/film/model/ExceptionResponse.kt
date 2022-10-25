@@ -1,10 +1,9 @@
 package com.kpoma.film.model
 
-class ExceptionResponse {
+import kotlin.reflect.KClass
 
-    var httpStatus: Int ?= null
-    var message: String ?= null
-
-
+class ExceptionResponse(status: Int, msg: String) {
+    var httpStatus: Int = status
+    var message: String = msg
 
 }

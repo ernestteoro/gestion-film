@@ -34,7 +34,7 @@ public class Film {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User userByUserId;
+    private User user;
 
     public int getId() {
         return id;
@@ -115,11 +115,11 @@ public class Film {
         return Objects.hash(id, name, description, type, annee, budget, createdAt, updatedAt);
     }
 
-    public User getUserByUserId() {
-        return userByUserId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
+    public void setUser(User userByUserId) {
+        this.user = userByUserId;
     }
 }

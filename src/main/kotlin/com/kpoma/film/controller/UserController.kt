@@ -6,9 +6,7 @@ import com.kpoma.film.model.ExceptionResponse
 import com.kpoma.film.model.Playlist
 import com.kpoma.film.model.User
 import com.kpoma.film.service.UserService
-import com.kpoma.film.utils.authenticationToken
-import com.kpoma.film.utils.generateAccessToken
-import com.kpoma.film.utils.getDataFromToken
+import com.kpoma.film.utils.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.jpa.repository.Query
@@ -51,13 +49,13 @@ class UserController(
             authResponse.username = authUser.username
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse)
         }catch (ex: Exception){
-            //throw CustomException("Erreur de connexion, ou vous n'etes pas autorise")
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                responseBody(
+                    message = FORBIDENMESSAGE,
+                    httpStatus = HttpStatus.FORBIDDEN.value()
+                )
+            )
         }
-
-        val response=ExceptionResponse()
-        response.httpStatus = HttpStatus.FORBIDDEN.value()
-        response.message="Erreur de connexion, ou vous n'etes pas autorise"
-       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -73,14 +71,21 @@ class UserController(
 
 
     @GetMapping("{id}")
-    fun getUserById(@PathVariable id:Int, request: HttpServletRequest):ResponseEntity<User>? {
+    fun getUserById(@PathVariable id:Int, request: HttpServletRequest):ResponseEntity<Any>? {
         val token = authenticationToken(request)
         val userId= getDataFromToken(token, "userId")
-        if(userId.toString().toInt()==id){
+        val roles = getDataFromToken(token, "roles")
+
+        if((userId.toString().toInt() == id) || roles.toString().contains("ROLE_ADMIN")){
             return ResponseEntity.ok().body(userService.getUserById(id))
         }
 
-        return ResponseEntity.badRequest().body(User())
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+            responseBody(
+                message = FORBIDENMESSAGE,
+                httpStatus = HttpStatus.FORBIDDEN.value()
+            )
+        )
     }
 
     @GetMapping("{id}/playslists")

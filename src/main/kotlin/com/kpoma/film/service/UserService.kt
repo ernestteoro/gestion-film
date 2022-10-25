@@ -21,6 +21,7 @@ class UserService(
     fun addUser(user:User):User{
         val encodedPasswordEncoder = passwordEncoder.encode(user.password)
         user.password=encodedPasswordEncoder
+        user.roles = user.roles.trimIndent().trimEnd().trimStart()
         return userRepository.save(user)
     }
 

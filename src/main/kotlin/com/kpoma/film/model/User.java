@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String roles;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "userByUserId")
+    @OneToMany(mappedBy = "user")
     private Collection<Film> filmsById;
 
     @JsonIgnore
@@ -80,7 +80,7 @@ public class User implements UserDetails {
 
         Arrays.stream(roles.split(","))
                 .collect(Collectors.toList())
-                .forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+                .forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.trim())));
 
         return grantedAuthorities;
     }

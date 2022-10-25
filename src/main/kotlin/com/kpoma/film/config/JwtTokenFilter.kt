@@ -53,6 +53,7 @@ class JwtTokenFilter: OncePerRequestFilter() {
 
     fun setSecurtityContext(token: String, request: HttpServletRequest){
         val userDetails = getDetailUser(token)
+        userDetails.authorities.forEach { authorities-> println(authorities) }
         val authenticated = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
         authenticated.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = authenticated

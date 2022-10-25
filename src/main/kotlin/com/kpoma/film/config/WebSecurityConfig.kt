@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -38,14 +39,16 @@ class WebSecurityConfig( @Autowired val userRepository: UserRepository,
     }
 
 
+
     override fun configure(http: HttpSecurity?) {
         http!!.cors().and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/users/signup", "/users/login").permitAll()
+            .antMatchers("/users/signup", "/users/login",
+                "/swagger-resources/**","/css/**", "/js/**", "/swagger-ui/**","/swagger-ui.html",
+                "/v2/api-docs", "/webjars/**").permitAll()
             .anyRequest().authenticated()
-            //.expressionHandler(UsernameNotFoundException(""))
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
