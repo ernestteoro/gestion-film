@@ -12,18 +12,18 @@ import java.util.*
 
 
 
+@Configuration
 class SwaggerConfig {
 
-    /*
     private fun apiInfo(): ApiInfo {
         return ApiInfo(
             "Gestion film",
-            "APIs for MyApp.",
+            "Cette permet de gerer les films et playlist utilisateurs.",
             "1.0",
-            "Terms of service",
-            Contact("test", "www.technolyne.com", "technolyne@technolyne.com"),
+            "Termes et Conditions",
+            Contact("Technolyne", "www.technolyne.com", "contact@technolyne.com"),
             "License of API",
-            "API license URL",
+            "www.technolyne.com",
             Collections.emptyList()
         )
     }
@@ -31,12 +31,10 @@ class SwaggerConfig {
     @Bean
     fun api(): Docket? {
         return Docket(DocumentationType.SWAGGER_2)
-            .apiInfo(apiInfo())
+            //.apiInfo(apiInfo())
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.kpoma.film.controller"))
             .paths(PathSelectors.any())
             .build()
     }
-
-     */
 }

@@ -14,30 +14,7 @@ import java.util.*
 
 @SpringBootApplication
 @EnableSwagger2
-class FilmApplication{
-    private fun apiInfo(): ApiInfo {
-        return ApiInfo(
-            "Gestion film",
-            "Cette permet de gerer les films et playlist utilisateurs.",
-            "1.0",
-            "Termes et Conditions",
-            Contact("Technolyne", "www.technolyne.com", "contact@technolyne.com"),
-            "License of API",
-            "www.technolyne.com",
-            Collections.emptyList()
-        )
-    }
-
-    @Bean
-    fun api(): Docket? {
-        return Docket(DocumentationType.SWAGGER_2)
-            //.apiInfo(apiInfo())
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("com.kpoma.film.controller"))
-            .paths(PathSelectors.any())
-            .build()
-    }
-}
+class FilmApplication
 
 fun main(args: Array<String>) {
     runApplication<FilmApplication>(*args)
